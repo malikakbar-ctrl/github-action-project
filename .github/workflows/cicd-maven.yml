@@ -42,12 +42,10 @@ jobs:
 
     - name: Install Gitleaks
       run: |
-        curl -s https://api.github.com/repos/gitleaks/gitleaks/releases/latest | \
-          grep "browser_download_url.*linux_amd64.deb" | \
-          cut -d : -f 2,3 | \
-          tr -d \" | \
-          wget -qi - -O gitleaks.deb
-        sudo dpkg -i gitleaks.deb
+        wget https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_$(curl -s https://api.github.com/repos/gitleaks/gitleaks/releases/latest | jq -r '.tag_name' | sed 's/^v//')_linux_x64.tar.gz -O gitleaks.tar.gz
+        tar -xzf gitleaks.tar.gz
+        sudo mv gitleaks /usr/local/bin/
+        gitleaks version
 
     - name: Run Gitleaks Scan
       run: gitleaks detect --source . --report-path gitleaks-report.json --format json
