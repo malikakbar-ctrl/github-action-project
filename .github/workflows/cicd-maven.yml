@@ -48,4 +48,9 @@ jobs:
         gitleaks version
 
     - name: Run Gitleaks Scan
-      run: gitleaks detect --source . --report-path gitleaks-report.json --format json
+      run: |
+        gitleaks detect \
+        --source . \
+        --report-path gitleaks-report.json \
+        --report-format json
+
